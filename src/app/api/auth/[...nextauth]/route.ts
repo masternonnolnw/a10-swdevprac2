@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
@@ -10,7 +10,7 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        console.log(credentials);
+        console.log("credentials", credentials);
         // POST login data to your backend
         const res = await fetch(
           "https://vaccine-app-backend-six.vercel.app/api/v1/auth/login",
@@ -33,23 +33,22 @@ const handler = NextAuth({
   },
   callbacks: {
     async jwt({ token, user }) {
-      console.log(token);
-      console.log(user);
       // Store user data in token
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.token = (user as any).token;
       }
+
       return token;
     },
     async session({ session, token }) {
-      console.log(session);
-      console.log(token);
       // Send token data to the session object
       session.user._id = token.id as string;
       session.user.email = token.email as string;
       session.user.name = token.name as string;
+      session.user.token = token.token as string;
       return session;
     }
   },

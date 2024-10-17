@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import styles from "./banner.module.css";
 import { Button } from "@mui/material";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const Banner: React.FC = () => {
   //   รองรับกำรเปลี่ยนรูปภำพของ Banner เมื่อคลิกลงบน Banner โดยกำรใช้ useState • โดยมีภำพ Banner รวม 4 ภำพ และเมื่อคลิกภำพจะเปลี่ยนเป็นภำพถัดไป เมื่อครบแล้วจะวนกลับมำภำพแรก
@@ -18,6 +19,8 @@ const Banner: React.FC = () => {
     setImageIndex((imageIndex + 1) % images.length);
   };
 
+  const { data: session } = useSession();
+
   return (
     <div className={styles.banner} onClick={handleImageChange}>
       <img
@@ -28,6 +31,7 @@ const Banner: React.FC = () => {
       <div className={styles.textContainer}>
         <h1>Vaccine Service Center</h1>
         <p>Providing safe and effective vaccines for all.</p>
+        <p>Welcome {session?.user?.name}</p>
       </div>
 
       <Link href="/hospital" passHref className="absolute bottom-2 right-2">
