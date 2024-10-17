@@ -1,0 +1,22 @@
+.banner {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  opacity: 0.8;
+
+  height: 300px;
+  object-fit: cover;
+}
+
+.textContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(41, 41, 41);
+}

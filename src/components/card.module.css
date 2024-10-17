@@ -1,0 +1,22 @@
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  /* max-w-[500px] mx-auto */
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.textContainer {
+  padding: 16px;
+  color: #000;
+}
