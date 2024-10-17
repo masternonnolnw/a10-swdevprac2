@@ -1,0 +1,17 @@
+export const userLogIn = async (userEmail: string, userPassword: string) => {
+  const response = await fetch(
+    "https://vaccine-app-backend-six.vercel.app/api/v1/auth/login",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: userEmail,
+        password: userPassword
+      })
+    }
+  );
+  const data = await response.json();
+  return data;
+};

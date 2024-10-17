@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,8 +9,18 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import DateReserve from "@/components/DateReserve"; // Import the DatePicker component
 import Box from "@mui/material/Box";
+import { getUserProfile } from "@/libs/getUserProfile";
+import { SessionProvider } from "next-auth/react";
 
 const BookingPage = () => {
+  const [userProfile, setUserProfile] = useState<any>(null);
+
+  useEffect(() => {
+    getUserProfile("token").then((data) => setUserProfile(data));
+  }, []);
+
+  console.log(userProfile);
+
   const [formData, setFormData] = useState({
     "Name-Lastname": "",
     "Citizen ID": "",
@@ -34,61 +44,65 @@ const BookingPage = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 600, margin: "0 auto", mt: 5 }}>
-      <h1>Vaccine Booking</h1>
-      <form onSubmit={handleSubmit}>
-        {/* Name and Lastname */}
-        <TextField
-          label="Name-Lastname"
-          name="Name-Lastname"
-          variant="standard"
-          value={formData["Name-Lastname"]}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
+    <SessionProvider>
+      <Box sx={{ maxWidth: 600, margin: "0 auto", mt: 5 }}>
+        <h1>Vaccine Booking</h1>
+        <form onSubmit={handleSubmit}>
+          {/* Name and Lastname */}
+          <TextField
+            label="Name-Lastname"
+            name="Name-Lastname"
+            variant="standard"
+            value={formData["Name-Lastname"]}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
 
-        {/* Citizen ID */}
-        <TextField
-          label="Citizen ID"
-          name="Citizen ID"
-          variant="standard"
-          value={formData["Citizen ID"]}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
+          {/* Citizen ID */}
+          <TextField
+            label="Citizen ID"
+            name="Citizen ID"
+            variant="standard"
+            value={formData["Citizen ID"]}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
 
-        {/* Hospital Select */}
-        <FormControl fullWidth margin="normal" variant="standard">
-          <InputLabel id="hospital-label">Hospital</InputLabel>
-          <Select
-            labelId="hospital-label"
-            id="hospital"
-            value={formData.hospital}
-            onChange={handleSelectChange}
+          {/* Hospital Select */}
+          <FormControl fullWidth margin="normal" variant="standard">
+            <InputLabel id="hospital-label">Hospital</InputLabel>
+            <Select
+              labelId="hospital-label"
+              id="hospital"
+              value={formData.hospital}
+              onChange={handleSelectChange}
+            >
+              <MenuItem value="Chula">Chulalongkorn Hospital</MenuItem>
+              <MenuItem value="Rajavithi">Rajavithi Hospital</MenuItem>
+              <MenuItem value="Thammasat">
+                Thammasat University Hospital
+              </MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* Date Picker */}
+          <DateReserve />
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            variant="contained"
+            name="Book Vaccine"
+            fullWidth
+            sx={{ mt: 2 }}
           >
-            <MenuItem value="Chula">Chulalongkorn Hospital</MenuItem>
-            <MenuItem value="Rajavithi">Rajavithi Hospital</MenuItem>
-            <MenuItem value="Thammasat">Thammasat University Hospital</MenuItem>
-          </Select>
-        </FormControl>
-
-        {/* Date Picker */}
-        <DateReserve />
-
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          variant="contained"
-          name="Book Vaccine"
-          fullWidth
-          sx={{ mt: 2 }}
-        >
-          Book Vaccine
-        </Button>
-      </form>
-    </Box>
+            Book Vaccine
+          </Button>
+        </form>
+      </Box>
+    </SessionProvider>
   );
 };
 
